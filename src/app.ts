@@ -11,12 +11,13 @@ import { green } from "colors";
 import { createConnection } from "typeorm";
 
 import HelloResolver from "./resolvers/HelloResolver";
-
-const app: express.Application = express();
-const nextServer = next({ dev: true });
-const nextHandler = nextServer.getRequestHandler();
+import { __prod__ } from "./globals";
 
 dotenv.config();
+const app: express.Application = express();
+const nextServer = next({ dev: __prod__ });
+const nextHandler = nextServer.getRequestHandler();
+
 app.use(cors());
 app.use(
   graphqlUploadExpress({
