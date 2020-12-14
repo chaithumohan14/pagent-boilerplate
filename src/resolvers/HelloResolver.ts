@@ -4,7 +4,7 @@ import { Query, Resolver } from "type-graphql";
 class HelloResolver {
   @Query(() => String)
   async hello(): Promise<string> {
-    return "hai";
+    return "hai hello";
   }
 }
 

@@ -7,16 +7,16 @@ import { parse } from "url";
 import { ApolloServer } from "apollo-server-express";
 import { graphqlUploadExpress } from "graphql-upload";
 import { buildSchema } from "type-graphql";
-import HelloResolver from "./resolvers/HelloResolver";
 import { green } from "colors";
 import { createConnection } from "typeorm";
 
-dotenv.config();
+import HelloResolver from "./resolvers/HelloResolver";
 
 const app: express.Application = express();
 const nextServer = next({ dev: true });
 const nextHandler = nextServer.getRequestHandler();
 
+dotenv.config();
 app.use(cors());
 app.use(
   graphqlUploadExpress({
@@ -25,11 +25,13 @@ app.use(
     maxFiles: 10,
   })
 );
+
 const main = async () => {
   const schema = await buildSchema({
     resolvers: [HelloResolver],
     validate: false,
   });
+
   const apolloserver = new ApolloServer({
     schema: schema,
     uploads: false,
@@ -48,6 +50,7 @@ const main = async () => {
       green(`> Server running on http://localhost:${process.env.PORT}`)
     );
   });
+
   app.get("*", (req, res) => {
     return nextHandler(req, res, parse(req.url, true));
   });
